@@ -5,16 +5,16 @@ require("console.table");
 
 init();
 
-// Display logo text, load main prompts
+// Display logo in terminal + load user prompts/selections
 function init() {
   const logoText = logo({ name: "Employee Manager" }).render();
 
   console.log(logoText);
 
-  loadMainPrompts();
+  showPrompts();
 }
 
-async function loadMainPrompts() {
+async function showPrompts() {
   const { choice } = await prompt([
     {
       type: "list",
@@ -81,14 +81,14 @@ async function loadMainPrompts() {
     }
   ]);
 
-  // Call the appropriate function depending on what the user chose
+  // Call function according to user input
   switch (choice) {
     case "VIEW_EMPLOYEES":
-      return viewEmployees();
+      return listEmployees();
     case "VIEW_EMPLOYEES_BY_DEPARTMENT":
-      return viewEmployeesByDepartment();
+      return listEmployeesByDepartment();
     case "VIEW_EMPLOYEES_BY_MANAGER":
-      return viewEmployeesByManager();
+      return listEmployeesByManager();
     case "ADD_EMPLOYEE":
       return addEmployee();
     case "REMOVE_EMPLOYEE":
@@ -98,13 +98,13 @@ async function loadMainPrompts() {
     case "UPDATE_EMPLOYEE_MANAGER":
       return updateEmployeeManager();
     case "VIEW_DEPARTMENTS":
-      return viewDepartments();
+      return listDepartments();
     case "ADD_DEPARTMENT":
       return addDepartment();
     case "REMOVE_DEPARTMENT":
       return removeDepartment();
     case "VIEW_ROLES":
-      return viewRoles();
+      return listRoles();
     case "ADD_ROLE":
       return addRole();
     case "REMOVE_ROLE":
@@ -114,16 +114,16 @@ async function loadMainPrompts() {
   }
 }
 
-async function viewEmployees() {
+async function listEmployees() {
   const employees = await db.findAllEmployees();
 
   console.log("\n");
   console.table(employees);
 
-  loadMainPrompts();
+  showPrompts();
 }
 
-async function viewEmployeesByDepartment() {
+async function listEmployeesByDepartment() {
   const departments = await db.findAllDepartments();
 
   const departmentChoices = departments.map(({ id, name }) => ({
@@ -145,10 +145,10 @@ async function viewEmployeesByDepartment() {
   console.log("\n");
   console.table(employees);
 
-  loadMainPrompts();
+  showPrompts();
 }
 
-async function viewEmployeesByManager() {
+async function listEmployeesByManager() {
   const managers = await db.findAllEmployees();
 
   const managerChoices = managers.map(({ id, first_name, last_name }) => ({
@@ -175,7 +175,7 @@ async function viewEmployeesByManager() {
     console.table(employees);
   }
 
-  loadMainPrompts();
+  showPrompts();
 }
 
 async function removeEmployee() {
@@ -199,7 +199,7 @@ async function removeEmployee() {
 
   console.log("Removed employee from the database");
 
-  loadMainPrompts();
+  showPrompts();
 }
 
 async function updateEmployeeRole() {
@@ -239,7 +239,7 @@ async function updateEmployeeRole() {
 
   console.log("Updated employee's role");
 
-  loadMainPrompts();
+  showPrompts();
 }
 
 async function updateEmployeeManager() {
@@ -280,16 +280,16 @@ async function updateEmployeeManager() {
 
   console.log("Updated employee's manager");
 
-  loadMainPrompts();
+  showPrompts();
 }
 
-async function viewRoles() {
+async function listRoles() {
   const roles = await db.findAllRoles();
 
   console.log("\n");
   console.table(roles);
 
-  loadMainPrompts();
+  showPrompts();
 }
 
 async function addRole() {
@@ -321,7 +321,7 @@ async function addRole() {
 
   console.log(`Added ${role.title} to the database`);
 
-  loadMainPrompts();
+  showPrompts();
 }
 
 async function removeRole() {
@@ -346,16 +346,16 @@ async function removeRole() {
 
   console.log("Removed role from the database");
 
-  loadMainPrompts();
+  showPrompts();
 }
 
-async function viewDepartments() {
+async function listDepartments() {
   const departments = await db.findAllDepartments();
 
   console.log("\n");
   console.table(departments);
 
-  loadMainPrompts();
+  showPrompts();
 }
 
 async function addDepartment() {
@@ -370,7 +370,7 @@ async function addDepartment() {
 
   console.log(`Added ${department.name} to the database`);
 
-  loadMainPrompts();
+  showPrompts();
 }
 
 async function removeDepartment() {
@@ -393,7 +393,7 @@ async function removeDepartment() {
 
   console.log(`Removed department from the database`);
 
-  loadMainPrompts();
+  showPrompts();
 }
 
 async function addEmployee() {
@@ -446,7 +446,7 @@ async function addEmployee() {
     `Added ${employee.first_name} ${employee.last_name} to the database`
   );
 
-  loadMainPrompts();
+  showPrompts();
 }
 
 function quit() {
